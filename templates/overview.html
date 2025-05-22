@@ -26,17 +26,20 @@
         <thead>
             <tr>
                 <th>Datum</th>
-                <th>Transaktion</th>
+                <th>Buchungstext</th>
+                <th>Betrag</th>
             </tr>
         </thead>
         <tbody>
-            {% for date, transaction in data %}
+            {% for date, text, amount in data %}
             <tr>
                 <td>{{ date }}</td>
-                <td>{{ transaction }}</td>
+                <td>{{ text }}</td>
+                <td>{{ amount }}</td>
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
 
     <a href="{{ url_for('download_csv', filename=csv_filename) }}" class="btn btn-success">CSV herunterladen</a>
