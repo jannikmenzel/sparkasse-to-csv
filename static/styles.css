@@ -42,7 +42,7 @@ body {
    ======================== */
 .hero-section {
     position: relative;
-    height: 91vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
