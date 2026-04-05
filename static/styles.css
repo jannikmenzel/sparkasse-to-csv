@@ -42,7 +42,7 @@ body {
    ======================== */
 .hero-section {
     position: relative;
-    height: 80vh;
+    height: 60vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,6 +104,39 @@ footer {
 }
 
 /* ========================
+   Overview Layout
+   ======================== */
+.overview-page {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+.overview-main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.overview-tab-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.overview-actions {
+    flex-shrink: 0;
+}
+
+.overview-page footer {
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+/* ========================
    Responsives Design
    ======================== */
 @media (max-width: 700px) {
@@ -134,5 +167,9 @@ footer {
     .navbar-nav .nav-item {
         margin-left: 5px;
         margin-right: 5px;
+    }
+
+    .overview-page {
+        padding-top: 72px;
     }
 }

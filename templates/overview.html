@@ -7,39 +7,101 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
+<body class="overview-page">
 
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="index.html">Budget Tracker</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">Sparkasse-to-CSV</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </nav>
 
-<div class="container py-5" style="margin-top: 50px;">
+<div class="container py-4 overview-main">
     <h2>Extrahierte Transaktionen</h2>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Transaktion</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for date, transaction in data %}
-            <tr>
-                <td>{{ date }}</td>
-                <td>{{ transaction }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-pane" type="button" role="tab" aria-controls="transactions-pane" aria-selected="true">Transaktionsliste</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="balances-tab" data-bs-toggle="tab" data-bs-target="#balances-pane" type="button" role="tab" aria-controls="balances-pane" aria-selected="false">Kontostände</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log-pane" type="button" role="tab" aria-controls="log-pane" aria-selected="false">Log</button>
+        </li>
+    </ul>
 
-    <a href="{{ url_for('download_csv', filename=csv_filename) }}" class="btn btn-success">CSV herunterladen</a>
+    <div class="tab-content border border-top-0 p-3 mb-4 overview-tab-content" id="resultTabsContent">
+        <div class="tab-pane fade show active" id="transactions-pane" role="tabpanel" aria-labelledby="transactions-tab" tabindex="0">
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Inhalt</th>
+                            <th>Transaktion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for date, content, transaction in transaction_rows %}
+                        <tr>
+                            <td>{{ date }}</td>
+                            <td>{{ content }}</td>
+                            <td>{{ transaction }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="balances-pane" role="tabpanel" aria-labelledby="balances-tab" tabindex="0">
+            {% if balances %}
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Datei</th>
+                            <th>Datum</th>
+                            <th>Kontostand</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in balances %}
+                        <tr>
+                            <td>{{ entry.file }}</td>
+                             <td>{{ entry.date }}</td>
+                            <td>{{ entry.balance }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="mb-0 text-muted">Keine Kontostand-Daten in den hochgeladenen Dateien gefunden.</p>
+            {% endif %}
+        </div>
+
+        <div class="tab-pane fade" id="log-pane" role="tabpanel" aria-labelledby="log-tab" tabindex="0">
+            <label for="processingLog" class="form-label">Verarbeitungs-Log</label>
+            <textarea
+                id="processingLog"
+                class="form-control"
+                rows="12"
+                readonly
+                style="white-space: pre; overflow: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;"
+            >{{ processing_log }}</textarea>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 overview-actions">
+        <a href="{{ url_for('download_csv', filename=transactions_csv) }}" class="btn btn-success">Transaktionen CSV herunterladen</a>
+        <a href="{{ url_for('download_csv', filename=balances_csv) }}" class="btn btn-success">Kontostände CSV herunterladen</a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Weitere PDFs hochladen</a>
+    </div>
 </div>
 
 <!-- Footer -->

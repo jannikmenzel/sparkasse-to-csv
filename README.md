@@ -26,7 +26,7 @@ pip install -r requirements.txt
 git clone git@github.com:jannikmenzel/sparkasse-to-csv.git
 cd sparkasse-to-csv
 
-flask run
+python -m flask run
 ```
 
 Anschließend kannst du die Website im Browser unter [http://127.0.0.1:5000](http://127.0.0.1:5000) aufrufen.
